@@ -81,8 +81,8 @@ export async function POST(request: NextRequest) {
     }
 
     // 插入到Supabase
-    const { data: insertedData, error } = await supabase
-      .from('salaries')
+    const { data: insertedData, error } = await (supabase
+      .from('salaries') as any)
       .insert(validatedData)
       .select()
 

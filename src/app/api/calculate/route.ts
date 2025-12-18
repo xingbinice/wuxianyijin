@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       throw new Error('未找到城市费率数据，请先上传城市数据')
     }
 
-    const cityData = cities[0]
+    const cityData = cities[0] as CityData
 
     // 获取薪资数据
     const { data: salaryData, error: salaryError } = await supabase
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     }, {})
 
     // 计算每个员工的五险一金
-    const results = []
+    const results: Omit<CalculationResult, 'id' | 'created_at' | 'updated_at'>[] = []
     for (const [employeeId, employeeData] of Object.entries(groupedSalaries)) {
       const { employee_name, salaries } = employeeData
 
@@ -130,8 +130,8 @@ export async function POST(request: NextRequest) {
     }
 
   // 保存结果到Supabase
-    const { data: savedResults, error: saveError } = await supabase
-      .from('calculation_results')
+    const { data: savedResults, error: saveError } = await (supabase
+      .from('calculation_results') as any)
       .insert(results)
       .select()
 

@@ -81,8 +81,8 @@ export async function POST(request: NextRequest) {
     }
 
     // 插入到Supabase
-    const { data: insertedData, error } = await supabase
-      .from('cities')
+    const { data: insertedData, error } = await (supabase
+      .from('cities') as any)
       .insert(validatedData)
       .select()
 
