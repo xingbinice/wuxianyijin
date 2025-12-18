@@ -1,15 +1,23 @@
 import { createClient } from '@supabase/supabase-js'
 
-// 确保环境变量存在
+// 获取环境变量
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
+// 检查环境变量是否存在
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('缺少Supabase环境变量。请检查.env.local文件。')
+  if (process.env.NODE_ENV === 'development') {
+    throw new Error('缺少Supabase环境变量。请在.env.local文件中配置NEXT_PUBLIC_SUPABASE_URL和NEXT_PUBLIC_SUPABASE_ANON_KEY。')
+  } else {
+    // 生产环境中，我们提供一个更友好的错误处理
+    console.error('Supabase环境变量未配置')
+  }
 }
 
-// 创建Supabase客户端
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// 创建Supabase客户端（只有在环境变量存在时才创建）
+export const supabase = supabaseUrl && supabaseAnonKey
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null
 
 // 辅助函数：处理Supabase错误
 export const handleSupabaseError = (error: any) => {

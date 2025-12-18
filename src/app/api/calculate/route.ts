@@ -13,6 +13,14 @@ const INSURANCE_RATES = {
 
 export async function POST(request: NextRequest) {
   try {
+    // 检查Supabase客户端是否可用
+    if (!supabase) {
+      return NextResponse.json(
+        { error: '数据库未配置，请联系管理员' },
+        { status: 500 }
+      )
+    }
+
     // 从Supabase获取数据
     const { data: cities, error: citiesError } = await supabase
       .from('cities')

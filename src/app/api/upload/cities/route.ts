@@ -71,6 +71,14 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // 检查Supabase客户端是否可用
+    if (!supabase) {
+      return NextResponse.json(
+        { error: '数据库未配置，请联系管理员' },
+        { status: 500 }
+      )
+    }
+
     // 插入到Supabase
     const { data: insertedData, error } = await supabase
       .from('cities')

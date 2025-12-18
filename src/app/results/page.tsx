@@ -51,7 +51,8 @@ export default function ResultsPage() {
         const data = await response.json()
         setResults(data.results || [])
       } else {
-        setError('获取结果失败')
+        const errorData = await response.json()
+        setError(errorData.error || '获取结果失败')
       }
     } catch (error) {
       setError('网络错误，请重试')
