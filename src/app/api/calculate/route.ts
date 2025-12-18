@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase, handleSupabaseError, CityData, SalaryData, CalculationResult } from '@/lib/supabase'
+import { getSupabaseClient, handleSupabaseError, CityData, SalaryData, CalculationResult } from '@/lib/supabase'
 
 // 五险一金费率配置
 const INSURANCE_RATES = {
@@ -13,7 +13,8 @@ const INSURANCE_RATES = {
 
 export async function POST(request: NextRequest) {
   try {
-    // 检查Supabase客户端是否可用
+    // 获取Supabase客户端
+    const supabase = getSupabaseClient()
     if (!supabase) {
       return NextResponse.json(
         { error: '数据库未配置，请联系管理员' },

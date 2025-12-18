@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import * as XLSX from 'xlsx'
-import { supabase, handleSupabaseError, CityData } from '@/lib/supabase'
+import { getSupabaseClient, handleSupabaseError, CityData } from '@/lib/supabase'
 
 export async function POST(request: NextRequest) {
   try {
@@ -71,7 +71,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 检查Supabase客户端是否可用
+    // 获取Supabase客户端
+    const supabase = getSupabaseClient()
     if (!supabase) {
       return NextResponse.json(
         { error: '数据库未配置，请联系管理员' },
