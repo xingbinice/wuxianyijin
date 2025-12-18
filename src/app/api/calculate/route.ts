@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
       salaries: number[]
     }
 
-    const groupedSalaries = salaryData.reduce((acc: Record<string, GroupedSalaryData>, salary) => {
+    const groupedSalaries = (salaryData as SalaryData[]).reduce((acc: Record<string, GroupedSalaryData>, salary: SalaryData) => {
       const key = salary.employee_id
       if (!acc[key]) {
         acc[key] = {
