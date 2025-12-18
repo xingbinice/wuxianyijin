@@ -9,9 +9,9 @@
 - 获取了 Supabase URL 和匿名密钥
 - 将代码推送到 GitHub
 
-### 2. Vercel 环境变量配置
+### 2. Vercel 环境变量配置（必须步骤）
 
-在 Vercel 部署之前，需要配置环境变量：
+⚠️ **重要**：环境变量必须在部署前配置，否则应用将无法正常运行！
 
 #### 方法一：通过 Vercel Dashboard（推荐）
 
@@ -20,8 +20,8 @@
 3. 导入你的 GitHub 仓库
 4. 在 "Configure Project" 步骤中，点击 "Environment Variables"
 5. 添加以下环境变量：
-   - `NEXT_PUBLIC_SUPABASE_URL`: 你的 Supabase 项目 URL
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: 你的 Supabase 匿名密钥
+   - `NEXT_PUBLIC_SUPABASE_URL`: `https://sbnkwgunbdbpxjnojqbb.supabase.co`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNibmt3Z3VuYmRicHhqbm9qcWJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwNzM1MDcsImV4cCI6MjA4MTY0OTUwN30.Nn37_zQrP69OLlB7yX59B0qdl8N2Yev2YjKHVCyLm9Q`
 
 #### 方法二：通过 Vercel CLI
 
@@ -32,9 +32,12 @@ npm i -g vercel
 # 登录 Vercel
 vercel login
 
-# 设置环境变量
+# 设置环境变量（使用具体值）
 vercel env add NEXT_PUBLIC_SUPABASE_URL
+# 当提示时输入：https://sbnkwgunbdbpxjnojqbb.supabase.co
+
 vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY
+# 当提示时输入你的密钥
 
 # 部署
 vercel --prod
@@ -82,9 +85,17 @@ vercel --prod
 
 #### 常见问题
 
+**错误：Environment Variable references Secret which does not exist**
+- 原因：vercel.json 中引用了不存在的 Secret
+- 解决：删除 vercel.json 文件，通过 Vercel Dashboard 配置环境变量
+
 **错误：数据库未配置，请联系管理员**
-- 原因：环境变量未正确配置
-- 解决：检查 Vercel 项目设置中的环境变量
+- 原因：环境变量未正确配置或为空
+- 解决：检查 Vercel 项目设置中的环境变量，确保值正确
+
+**错误：Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL**
+- 原因：环境变量在构建时未设置或格式错误
+- 解决：在部署前配置好所有环境变量
 
 **错误：404 页面**
 - 原因：构建失败或路由配置问题
