@@ -43,7 +43,13 @@ export async function POST(request: NextRequest) {
     }
 
     // 按员工分组
-    const groupedSalaries = salaryData.reduce((acc, salary) => {
+    interface GroupedSalaryData {
+      employee_id: string
+      employee_name: string
+      salaries: number[]
+    }
+
+    const groupedSalaries = salaryData.reduce((acc: Record<string, GroupedSalaryData>, salary) => {
       const key = salary.employee_id
       if (!acc[key]) {
         acc[key] = {
@@ -54,7 +60,7 @@ export async function POST(request: NextRequest) {
       }
       acc[key].salaries.push(salary.salary_amount)
       return acc
-    }, {} as any)
+    }, {})
 
     // 计算每个员工的五险一金
     const results = []
